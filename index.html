@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Pipeline Explorer | Interactive AI Architecture & Vector Space Laboratory</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for crisp mathematical notation rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+
+  <!-- External CDNs: Three.js, OrbitControls, Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       TOP NAVIGATION BAR
+       ======================================================== -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="#overview" class="nav-brand">
+        <div class="nav-logo-icon">⚡</div>
+        <div>
+          <span class="nav-brand-text">LLM Pipeline Explorer</span>
+        </div>
+        <span class="nav-badge">v2.5 Lab</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#overview" class="nav-link active">Overview</a></li>
+        <li><a href="#module-vocab" class="nav-link">1. Vocabulary</a></li>
+        <li><a href="#module-tokenizer" class="nav-link">2. Tokenizer</a></li>
+        <li><a href="#module-embeddings" class="nav-link">3. Embeddings</a></li>
+        <li><a href="#module-space3d" class="nav-link">4. 3D Space</a></li>
+        <li><a href="#module-similarity" class="nav-link">5. Similarity</a></li>
+        <li><a href="#module-playground" class="nav-link">6. Playground</a></li>
+        <li><a href="#module-math" class="nav-link">7. Mathematics</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="status-pill">
+          <div class="status-dot"></div>
+          <span>ENGINE READY</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================
+       HERO & PIPELINE ARCHITECTURE OVERVIEW
+       ======================================================== -->
+  <header class="hero-section" id="overview">
+    <div class="container">
+      <div class="hero-tag">
+        <span>🔬 Interactive Educational Architecture</span>
+      </div>
+      <h1 class="hero-title">
+        Demystifying the <span class="text-gradient">LLM Processing Pipeline</span>
+      </h1>
+      <p class="hero-description">
+        Explore how modern Large Language Models transform raw human language into tokens, 
+        project them into high-dimensional geometric embedding vectors, and discover mathematical semantic relationships.
+      </p>
+
+      <!-- Interactive Clickable Pipeline Flowchart -->
+      <div class="pipeline-flow-wrapper">
+        <div class="pipeline-flow-title">
+          <span>End-to-End Mathematical Text Processing Pipeline</span>
+        </div>
+        <div class="pipeline-flow-steps">
+          <a href="#module-vocab" class="pipeline-step-node">
+            <span class="step-num">Step 01</span>
+            <div class="step-title">Raw Corpus</div>
+            <div class="step-desc">Text ingestion & vocab build</div>
+          </a>
+          <span class="pipeline-arrow">→</span>
+          <a href="#module-tokenizer" class="pipeline-step-node">
+            <span class="step-num">Step 02</span>
+            <div class="step-title">Tokenization</div>
+            <div class="step-desc">Word, Char & BPE Subwords</div>
+          </a>
+          <span class="pipeline-arrow">→</span>
+          <a href="#module-tokenizer" class="pipeline-step-node">
+            <span class="step-num">Step 03</span>
+            <div class="step-title">Token IDs</div>
+            <div class="step-desc">Discrete integer tensor IDs</div>
+          </a>
+          <span class="pipeline-arrow">→</span>
+          <a href="#module-embeddings" class="pipeline-step-node">
+            <span class="step-num">Step 04</span>
+            <div class="step-title">Embedding Matrix</div>
+            <div class="step-desc">Lookup vector in ℝ<sup>d</sup></div>
+          </a>
+          <span class="pipeline-arrow">→</span>
+          <a href="#module-space3d" class="pipeline-step-node">
+            <span class="step-num">Step 05</span>
+            <div class="step-title">PCA Projection</div>
+            <div class="step-desc">Dimensionality reduction</div>
+          </a>
+          <span class="pipeline-arrow">→</span>
+          <a href="#module-space3d" class="pipeline-step-node">
+            <span class="step-num">Step 06</span>
+            <div class="step-title">3D Space</div>
+            <div class="step-desc">Manifold geometric clusters</div>
+          </a>
+          <span class="pipeline-arrow">→</span>
+          <a href="#module-similarity" class="pipeline-step-node">
+            <span class="step-num">Step 07</span>
+            <div class="step-title">Similarity Lab</div>
+            <div class="step-desc">Cosine vs Jaccard metrics</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ========================================================
+         MODULE 1: VOCABULARY BUILDER
+         ======================================================== -->
+    <section class="section" id="module-vocab">
+      <div class="section-header">
+        <div class="section-badge">Module 01</div>
+        <h2 class="section-title">Corpus Ingestion & Vocabulary Builder</h2>
+        <p class="section-subtitle">
+          Before a language model can process text, it must construct an indexed vocabulary from a training corpus,
+          counting token occurrences and assigning unique integer token identifiers.
+        </p>
+      </div>
+
+      <!-- Corpus Statistics Cards -->
+      <div class="stat-grid" id="vocab-stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Words</div>
+          <div class="stat-value cyan" id="stat-total-words">0</div>
+          <div class="stat-unit">tokens in corpus</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Unique Vocabulary</div>
+          <div class="stat-value purple" id="stat-vocab-size">0</div>
+          <div class="stat-unit">distinct word forms</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Repeated Words</div>
+          <div class="stat-value emerald" id="stat-repeated-words">0</div>
+          <div class="stat-unit">redundancy count</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Type-Token Ratio (TTR)</div>
+          <div class="stat-value amber" id="stat-ttr">0.00</div>
+          <div class="stat-unit">lexical diversity (V / N)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Word Length</div>
+          <div class="stat-value" id="stat-avg-length">0.0</div>
+          <div class="stat-unit">characters / word</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Vocab Growth</div>
+          <div class="stat-value cyan" id="stat-vocab-growth">0.0%</div>
+          <div class="stat-unit">uniqueness rate</div>
+        </div>
+      </div>
+
+      <div class="vocab-layout">
+        <!-- Corpus Input Card -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Training Corpus Input</h3>
+              <p class="card-subtitle">Enter text or load educational presets to extract vocabulary</p>
+            </div>
+            <button class="btn btn-sm btn-secondary" id="btn-vocab-clear">Clear</button>
+          </div>
+
+          <div class="form-group">
+            <textarea id="corpus-input" class="textarea-custom" rows="9" placeholder="Paste or type a training corpus here..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Load Domain Corpus Presets:</label>
+            <div class="preset-pills">
+              <button class="preset-pill active" data-preset="ai">AI & Neural Networks</button>
+              <button class="preset-pill" data-preset="astronomy">Astrophysics</button>
+              <button class="preset-pill" data-preset="shakespeare">Shakespeare</button>
+              <button class="preset-pill" data-preset="engineering">Distributed Systems</button>
+            </div>
+          </div>
+
+          <div class="btn-group" style="margin-top: 1.5rem;">
+            <button class="btn btn-primary" id="btn-build-vocab">⚡ Extract & Build Vocabulary</button>
+            <button class="btn btn-secondary" id="btn-export-json">💾 Export JSON</button>
+            <button class="btn btn-secondary" id="btn-copy-json">📋 Copy JSON</button>
+          </div>
+        </div>
+
+        <!-- Interactive Vocabulary Table Card -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Indexed Vocabulary Dictionary</h3>
+              <p class="card-subtitle">Showing mapping between surface words, token IDs, and frequencies</p>
+            </div>
+          </div>
+
+          <div class="table-toolbar">
+            <div class="table-search">
+              <input type="text" id="vocab-search-input" class="input-custom input-mono" placeholder="🔍 Search word or ID...">
+            </div>
+            <select id="vocab-filter-select" class="table-filter-select">
+              <option value="all">Filter: All Entries</option>
+              <option value="words">Standard Words Only</option>
+              <option value="repeated">Repeated Words (freq > 1)</option>
+              <option value="unique">Unique Words (freq = 1)</option>
+              <option value="special">Special Reserved Tokens</option>
+            </select>
+          </div>
+
+          <div class="data-table-wrapper">
+            <table class="data-table" id="vocab-table">
+              <thead>
+                <tr>
+                  <th data-sort="id">Token ID ⬍</th>
+                  <th data-sort="word">Word / Token ⬍</th>
+                  <th data-sort="freq">Frequency ⬍</th>
+                  <th data-sort="length">Length ⬍</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="vocab-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination-controls">
+            <span id="vocab-pagination-info">Showing 1-12 of 0</span>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-secondary" id="btn-vocab-prev">◀ Previous</button>
+              <button class="btn btn-sm btn-secondary" id="btn-vocab-next">Next ▶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MODULE 2: INTERACTIVE TOKENIZER
+         ======================================================== -->
+    <section class="section" id="module-tokenizer">
+      <div class="section-header">
+        <div class="section-badge">Module 02</div>
+        <h2 class="section-title">Interactive Multi-Level Tokenizer & 6-Stage Pipeline</h2>
+        <p class="section-subtitle">
+          Compare Word-level, Character-level, and Subword (BPE/WordPiece) segmentation.
+          Tune the vocabulary size slider to see how words dynamically fracture into subword morphemes.
+        </p>
+      </div>
+
+      <!-- Tokenizer Mode Switcher Tabs -->
+      <div class="tokenizer-mode-tabs">
+        <button class="mode-tab active" data-mode="subword">
+          <span>🧩 Subword (BPE / WordPiece)</span>
+        </button>
+        <button class="mode-tab" data-mode="word">
+          <span>📝 Word-Level</span>
+        </button>
+        <button class="mode-tab" data-mode="char">
+          <span>🔡 Character-Level</span>
+        </button>
+      </div>
+
+      <!-- Tokenizer Input & Controls -->
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="form-group">
+          <label class="form-label">Input Text to Tokenize:</label>
+          <textarea id="tokenizer-input" class="textarea-custom" rows="3">Transformers transform natural language into high-dimensional embedding vectors.</textarea>
+        </div>
+
+        <div class="preset-pills" style="margin-bottom: 1rem;">
+          <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center;">Try Example:</span>
+          <button class="preset-pill" data-tok-preset="Transformers transform natural language into high-dimensional embedding vectors.">Transformers NLP</button>
+          <button class="preset-pill" data-tok-preset="Unbelievable multimodal capabilities in artificial neural networks.">Morphemes & Subwords</button>
+          <button class="preset-pill" data-tok-preset="The quick brown fox jumps over the lazy sleeping dog! 1234">Punctuation & Numbers</button>
+        </div>
+
+        <!-- Dynamic Subword Vocabulary Slider (Only active in subword mode) -->
+        <div class="slider-control-group" id="subword-slider-container">
+          <div class="slider-header">
+            <span>Subword Vocabulary Size Quota:</span>
+            <span class="slider-val-badge" id="vocab-slider-val">80 tokens</span>
+          </div>
+          <input type="range" id="vocab-size-slider" class="slider-input" min="30" max="220" value="80" step="5">
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+            💡 <strong>Educational Notice:</strong> Decreasing vocabulary size forces the model to decompose complex words into smaller subword morphemes (e.g., <code>transform</code> + <code>##ers</code>), preventing out-of-vocabulary [UNK] tokens.
+          </p>
+        </div>
+
+        <!-- Special Tokens Options -->
+        <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+          <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="chk-bos" checked> Include [BOS] (Beginning-of-Sequence)
+          </label>
+          <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="chk-eos" checked> Include [EOS] (End-of-Sequence)
+          </label>
+        </div>
+      </div>
+
+      <!-- Tokenizer Statistics -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Characters</div>
+          <div class="stat-value" id="tok-stat-chars">0</div>
+          <div class="stat-unit">raw characters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Tokens</div>
+          <div class="stat-value cyan" id="tok-stat-tokens">0</div>
+          <div class="stat-unit">generated units</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Unique Tokens</div>
+          <div class="stat-value purple" id="tok-stat-unique">0</div>
+          <div class="stat-unit">distinct token IDs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Characters / Token</div>
+          <div class="stat-value emerald" id="tok-stat-cpt">0.0</div>
+          <div class="stat-unit">token efficiency</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Compression Ratio</div>
+          <div class="stat-value amber" id="tok-stat-compression">0.0</div>
+          <div class="stat-unit">vs 4 chars/token avg</div>
+        </div>
+      </div>
+
+      <!-- Interactive Token Display Stream -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Tokenized Representation Stream</h3>
+            <p class="card-subtitle">Click any token badge below to inspect character offsets, token ID, and taxonomy</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; font-size: 0.75rem;">
+            <span class="token-chip token-word" style="pointer-events: none;">Word</span>
+            <span class="token-chip token-subword-piece" style="pointer-events: none;">Subword (##)</span>
+            <span class="token-chip token-punct" style="pointer-events: none;">Punctuation</span>
+            <span class="token-chip token-special" style="pointer-events: none;">Special</span>
+          </div>
+        </div>
+
+        <div class="token-stream-container" id="token-stream-output">
+          <!-- Token badges rendered here -->
+        </div>
+
+        <!-- Token Inspector Details Card (updates on token click) -->
+        <div class="token-inspector-card" id="token-inspector">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h4 style="font-size: 0.9rem; color: var(--violet-primary);">Token Inspector: <span id="insp-token-name" style="color: var(--text-primary); font-family: var(--font-mono); font-size: 1.05rem; font-weight: 700;">-</span></h4>
+            <span class="token-badge" id="insp-token-badge">-</span>
+          </div>
+          <div class="inspector-grid">
+            <div>
+              <div class="inspector-field-label">Token ID</div>
+              <div class="inspector-field-val" id="insp-token-id">-</div>
+            </div>
+            <div>
+              <div class="inspector-field-label">Span Position</div>
+              <div class="inspector-field-val" id="insp-token-pos">[-]</div>
+            </div>
+            <div>
+              <div class="inspector-field-label">Char Length</div>
+              <div class="inspector-field-val" id="insp-token-len">-</div>
+            </div>
+            <div>
+              <div class="inspector-field-label">Frequency</div>
+              <div class="inspector-field-val" id="insp-token-freq">-</div>
+            </div>
+            <div>
+              <div class="inspector-field-label">Tokenizer Mode</div>
+              <div class="inspector-field-val" id="insp-token-method">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6-Stage Visual Pipeline Stepper -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">6-Stage Tokenization Pipeline Stepper</h3>
+            <p class="card-subtitle">Click through each internal processing step of the language model's tokenizer</p>
+          </div>
+        </div>
+
+        <div class="stages-stepper">
+          <button class="stage-tab active" data-stage="1">Step 1: Raw Text</button>
+          <button class="stage-tab" data-stage="2">Step 2: Normalization</button>
+          <button class="stage-tab" data-stage="3">Step 3: Segmentation</button>
+          <button class="stage-tab" data-stage="4">Step 4: Vocab Lookup</button>
+          <button class="stage-tab" data-stage="5">Step 5: ID Mapping</button>
+          <button class="stage-tab" data-stage="6">Step 6: Tensor Sequence</button>
+        </div>
+
+        <div class="stage-display-card">
+          <div class="stage-display-header" id="stage-display-title">Step 1: Raw Input Text</div>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.75rem;" id="stage-display-desc">
+            Raw unprocessed string received from user input.
+          </p>
+          <div class="stage-display-body" id="stage-display-content">
+            <!-- Stage content rendered here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MODULE 3: EMBEDDING GENERATOR
+         ======================================================== -->
+    <section class="section" id="module-embeddings">
+      <div class="section-header">
+        <div class="section-badge">Module 03</div>
+        <h2 class="section-title">Embedding Matrix & Vector Representations</h2>
+        <p class="section-subtitle">
+          Token IDs are converted into continuous numerical vectors via embedding matrix lookup:
+          <code>Token ID → Matrix Row E[id] → High-Dimensional Embedding Vector</code>.
+        </p>
+      </div>
+
+      <!-- Educational Distinction Disclaimer -->
+      <div class="card" style="border-left: 4px solid var(--violet-primary); margin-bottom: 1.5rem; background: var(--violet-light);">
+        <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+          <span style="font-size: 1.3rem;">ℹ️</span>
+          <div>
+            <strong style="color: var(--violet-primary); font-weight: 700;">Educational Architecture Disclaimer:</strong>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); margin-top: 0.25rem;">
+              Production LLMs (e.g., LLaMA, GPT-4) learn 4096-dimensional embeddings through gradient descent over trillions of tokens. 
+              In this educational lab, we utilize an interpretable <strong>16-dimensional deterministic semantic feature basis</strong> 
+              (aligned with axes such as Animate, Tech, Nature, Action, Abstract, Emotion) so vector arithmetic, matrix lookups, and PCA projections 
+              can be inspected directly and verified mathematically in real time without external API latency.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Embedding Matrix Viewer -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Embedding Weight Matrix E ∈ ℝ<sup>V × d</sup></h3>
+            <p class="card-subtitle">Click any row below to perform the embedding lookup operation and inspect its vector dimensions</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem;">
+            <span style="color: var(--text-muted);">Active Dimensions:</span>
+            <span class="token-badge">16-D Latent Axes</span>
+          </div>
+        </div>
+
+        <div class="matrix-viewer-container">
+          <table class="matrix-table" id="embedding-matrix-table">
+            <thead>
+              <tr id="matrix-header-row">
+                <th>Token</th>
+                <th>Token ID</th>
+                <!-- Dimensions d0 - d15 -->
+              </tr>
+            </thead>
+            <tbody id="embedding-matrix-body">
+              <!-- Matrix rows dynamically generated -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Selected Vector Dimension Heat Strip -->
+        <div style="margin-top: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.85rem; font-weight: 600;">Vector Dimension Heatmap: <span id="selected-vec-word" style="color: var(--cyan-primary); font-family: var(--font-mono);">computer</span></span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Normalized L2 Magnitude = 1.00</span>
+          </div>
+          <div class="vector-dim-bars" id="vector-dim-bars">
+            <!-- Heatmap dimension cells rendered here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Vector Comparison Lab -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Token Vector Comparative Analysis</h3>
+            <p class="card-subtitle">Select two tokens to compare their high-dimensional cosine similarity, Euclidean distance, and dot product</p>
+          </div>
+        </div>
+
+        <div class="comparator-grid">
+          <div>
+            <label class="form-label">Select First Token (Vector u):</label>
+            <select id="comparator-select-1" class="input-custom input-mono">
+              <!-- Populated via JS -->
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Select Second Token (Vector v):</label>
+            <select id="comparator-select-2" class="input-custom input-mono">
+              <!-- Populated via JS -->
+            </select>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Cosine Similarity</div>
+            <div class="stat-value cyan" id="comp-stat-cosine">0.000</div>
+            <div class="stat-unit">cos(θ) = (u · v) / (||u|| ||v||)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Dot Product</div>
+            <div class="stat-value purple" id="comp-stat-dot">0.000</div>
+            <div class="stat-unit">∑ uᵢ · vᵢ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Euclidean Distance</div>
+            <div class="stat-value emerald" id="comp-stat-euclid">0.000</div>
+            <div class="stat-unit">L2 norm: √(∑ (uᵢ - vᵢ)²)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Manhattan Distance</div>
+            <div class="stat-value amber" id="comp-stat-manhattan">0.000</div>
+            <div class="stat-unit">L1 norm: ∑ |uᵢ - vᵢ|</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MODULE 4: INTERACTIVE 3D EMBEDDING SPACE
+         ======================================================== -->
+    <section class="section" id="module-space3d">
+      <div class="section-header">
+        <div class="section-badge">Module 04</div>
+        <h2 class="section-title">Interactive 3D Vector Space & PCA Projection</h2>
+        <p class="section-subtitle">
+          Observe how words cluster in geometric space based on semantic kinship. 
+          Rotate, zoom, search, add custom words, and inspect nearest neighbors in 3D.
+        </p>
+      </div>
+
+      <!-- 3D Canvas Viewport Container -->
+      <div class="viewport-3d-wrapper">
+        <div id="three-canvas-container"></div>
+
+        <!-- Floating Top Overlay Controls -->
+        <div class="viewport-overlay-top">
+          <div class="cluster-pills-bar">
+            <button class="cluster-pill-toggle active" data-cluster="animals">
+              <span class="cluster-color-indicator" style="background: #0284C7;"></span>
+              <span>Animals</span>
+            </button>
+            <button class="cluster-pill-toggle active" data-cluster="technology">
+              <span class="cluster-color-indicator" style="background: #2563EB;"></span>
+              <span>Tech</span>
+            </button>
+            <button class="cluster-pill-toggle active" data-cluster="programming">
+              <span class="cluster-color-indicator" style="background: #7957E8;"></span>
+              <span>Code</span>
+            </button>
+            <button class="cluster-pill-toggle active" data-cluster="nature">
+              <span class="cluster-color-indicator" style="background: #059669;"></span>
+              <span>Nature</span>
+            </button>
+            <button class="cluster-pill-toggle active" data-cluster="food">
+              <span class="cluster-color-indicator" style="background: #D97706;"></span>
+              <span>Food</span>
+            </button>
+            <button class="cluster-pill-toggle active" data-cluster="emotions">
+              <span class="cluster-color-indicator" style="background: #DB2777;"></span>
+              <span>Emotions</span>
+            </button>
+          </div>
+
+          <div class="viewport-tools-bar">
+            <button class="tool-btn active" id="btn-toggle-labels">Labels</button>
+            <button class="tool-btn active" id="btn-toggle-grid">Grid</button>
+            <button class="tool-btn active" id="btn-toggle-axes">Axes</button>
+            <button class="tool-btn active" id="btn-toggle-lines">Lines</button>
+            <button class="tool-btn" id="btn-toggle-autorotate">Auto-Rotate</button>
+          </div>
+        </div>
+
+        <!-- 3D Selected Point Inspector Card (Floating glassmorphic) -->
+        <div class="inspector-3d-card" id="inspector-3d">
+          <div class="inspector-3d-header">
+            <div>
+              <span style="font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted);">Selected Vector</span>
+              <div class="inspector-3d-title" id="node-3d-word">Select a Point</div>
+            </div>
+            <button class="btn btn-sm btn-secondary" id="btn-delete-node" style="display: none;">Delete</button>
+          </div>
+
+          <div style="font-size: 0.8rem; line-height: 1.6;">
+            <div><strong>Cluster:</strong> <span id="node-3d-cluster" style="color: var(--cyan-primary);">-</span></div>
+            <div><strong>Token ID:</strong> <span id="node-3d-id" style="font-family: var(--font-mono);">-</span></div>
+            <div><strong>3D Coordinates:</strong> <span id="node-3d-coords" style="font-family: var(--font-mono); font-size: 0.75rem;">(X: 0, Y: 0, Z: 0)</span></div>
+          </div>
+
+          <div style="margin-top: 0.75rem;">
+            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted);">Top 5 Nearest Neighbors:</span>
+            <ul class="nearest-neighbors-list" id="node-3d-neighbors">
+              <li style="color: var(--text-muted); font-size: 0.75rem;">Click a node to calculate nearest semantic neighbors.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Floating Tooltip on Hover -->
+        <div class="tooltip-3d" id="tooltip-3d"></div>
+      </div>
+
+      <!-- 3D Space Manipulation Controls Card -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; align-items: end;">
+          <div>
+            <label class="form-label">🔍 Search & Zoom to Word:</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="space-search-input" class="input-custom input-mono" placeholder="e.g., neural, lion, python...">
+              <button class="btn btn-secondary" id="btn-search-3d">Find</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label">➕ Add Custom Word to 3D Space:</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="space-add-input" class="input-custom input-mono" placeholder="e.g., galaxy, robotics...">
+              <button class="btn btn-primary" id="btn-add-3d">Add</button>
+            </div>
+          </div>
+
+          <div>
+            <button class="btn btn-secondary" id="btn-reset-3d" style="width: 100%;">
+              🔄 Reset 3D Visualization Camera & Points
+            </button>
+          </div>
+        </div>
+
+        <!-- Mathematical PCA Variance Explained Bar -->
+        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">
+            📐 <strong>PCA Variance Explained:</strong> 
+            PC1: <span id="pca-var-1" style="color: var(--cyan-primary); font-family: var(--font-mono);">38.4%</span> | 
+            PC2: <span id="pca-var-2" style="color: var(--purple-primary); font-family: var(--font-mono);">26.1%</span> | 
+            PC3: <span id="pca-var-3" style="color: var(--emerald-primary); font-family: var(--font-mono);">15.2%</span>
+          </span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Controls: Left-Click: Rotate | Right-Click: Pan | Scroll: Zoom</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MODULE 5: SENTENCE SIMILARITY LAB
+         ======================================================== -->
+    <section class="section" id="module-similarity">
+      <div class="section-header">
+        <div class="section-badge">Module 05</div>
+        <h2 class="section-title">Sentence Similarity Lab (Lexical vs Semantic)</h2>
+        <p class="section-subtitle">
+          Witness why classical keyword search fails where vector embeddings succeed: 
+          Compare Jaccard token overlap against dense embedding cosine similarity.
+        </p>
+      </div>
+
+      <!-- Presets Toolbar -->
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <label class="form-label">Load Educational Comparative Presets:</label>
+        <div class="preset-pills">
+          <button class="preset-pill active" data-sim-preset="paraphrase">Paraphrase (High Semantic, Low Lexical)</button>
+          <button class="preset-pill" data-sim-preset="identical">High Lexical & Semantic Overlap</button>
+          <button class="preset-pill" data-sim-preset="different">Completely Different Domains</button>
+        </div>
+      </div>
+
+      <!-- Sentence Input Side-by-Side -->
+      <div class="similarity-grid">
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom: 0.75rem; color: var(--amber-primary);">Sentence A:</h3>
+          <textarea id="sim-input-a" class="textarea-custom" rows="3">The intelligent neural network analyzed complex datasets with remarkable speed.</textarea>
+          <div style="margin-top: 1rem;">
+            <label class="form-label" style="font-size: 0.75rem;">Color-Coded Token Overlay:</label>
+            <div class="highlighted-text-box" id="sim-highlighted-a"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom: 0.75rem; color: var(--purple-primary);">Sentence B:</h3>
+          <textarea id="sim-input-b" class="textarea-custom" rows="3">An advanced AI algorithm examined intricate information very rapidly.</textarea>
+          <div style="margin-top: 1rem;">
+            <label class="form-label" style="font-size: 0.75rem;">Color-Coded Token Overlay:</label>
+            <div class="highlighted-text-box" id="sim-highlighted-b"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Similarity Metrics & Gauges -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Comparative Mathematical Metrics</h3>
+            <p class="card-subtitle">Real-time comparison between surface syntax and underlying vector semantics</p>
+          </div>
+        </div>
+
+        <!-- Jaccard Bar -->
+        <div class="similarity-bar-container">
+          <div class="bar-label-row">
+            <span>Lexical Overlap (Jaccard Similarity):</span>
+            <span id="sim-metric-jaccard" style="color: var(--amber-primary); font-family: var(--font-mono);">0.0%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill jaccard" id="bar-fill-jaccard" style="width: 0%;"></div>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+            Formula: <code>J(A, B) = |A ∩ B| / |A ∪ B|</code> (Measures exact token surface sharing)
+          </p>
+        </div>
+
+        <!-- Cosine Bar -->
+        <div class="similarity-bar-container" style="margin-top: 1.5rem;">
+          <div class="bar-label-row">
+            <span>Semantic Vector Similarity (Mean-Pooled Cosine):</span>
+            <span id="sim-metric-cosine" style="color: var(--cyan-primary); font-family: var(--font-mono);">0.0%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill cosine" id="bar-fill-cosine" style="width: 0%;"></div>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+            Formula: <code>cos(θ) = (S_A · S_B) / (||S_A|| ||S_B||)</code> (Measures directional alignment of pooled vectors)
+          </p>
+        </div>
+
+        <!-- Token Intersections Pills -->
+        <div style="margin-top: 1.75rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+          <div>
+            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--emerald-primary);">
+              Shared Words (|A ∩ B| = <span id="sim-shared-count">0</span>):
+            </span>
+            <div class="preset-pills" id="sim-shared-pills" style="margin-top: 0.35rem;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">None</span>
+            </div>
+          </div>
+          <div>
+            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--amber-primary);">
+              Unique to A (<span id="sim-unique-a-count">0</span>):
+            </span>
+            <div class="preset-pills" id="sim-unique-a-pills" style="margin-top: 0.35rem;"></div>
+          </div>
+          <div>
+            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--purple-primary);">
+              Unique to B (<span id="sim-unique-b-count">0</span>):
+            </span>
+            <div class="preset-pills" id="sim-unique-b-pills" style="margin-top: 0.35rem;"></div>
+          </div>
+        </div>
+
+        <!-- Educational Insight Callout -->
+        <div class="insight-callout-card" id="sim-insight-card">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+            <span class="token-badge" id="sim-insight-badge">Analysis Ready</span>
+            <strong id="sim-insight-title" style="color: var(--text-primary); font-size: 0.95rem; font-weight: 700;">Semantic Paraphrase Detected</strong>
+          </div>
+          <p id="sim-insight-desc" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+            These sentences share virtually zero surface words, yet convey identical concepts. 
+            Dense embedding representations accurately project both sentences toward the same semantic region in vector space.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MODULE 6: TOKENIZER PLAYGROUND
+         ======================================================== -->
+    <section class="section" id="module-playground">
+      <div class="section-header">
+        <div class="section-badge">Module 06</div>
+        <h2 class="section-title">Tokenizer Experimentation Playground</h2>
+        <p class="section-subtitle">
+          Interactive multi-chart experimentation sandbox. As you type, dynamic charts update in real time 
+          to visualize frequencies, positional indices, 2D PCA projections, and token-to-token cross-attention heatmaps.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="form-group">
+          <label class="form-label">Live Playground Text Stream:</label>
+          <textarea id="playground-input" class="textarea-custom" rows="2">Neural networks learn representations through continuous optimization of high-dimensional weights.</textarea>
+        </div>
+      </div>
+
+      <!-- 4 Live Synchronized Charts (2x2 Grid) -->
+      <div class="charts-2x2-grid">
+        <!-- Chart 1: Token Frequency -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span>📊 Token Frequency Distribution</span>
+            <span style="color: var(--cyan-primary);">Chart.js</span>
+          </div>
+          <div class="chart-canvas-container">
+            <canvas id="chart-token-freq"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Token Position & Length -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span>📈 Token Character Span & Length</span>
+            <span style="color: var(--purple-primary);">Timeline</span>
+          </div>
+          <div class="chart-canvas-container">
+            <canvas id="chart-token-pos"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 3: 2D PCA Scatter Plot -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span>🌐 2D PCA Embedding Scatter</span>
+            <span style="color: var(--emerald-primary);">Principal Components</span>
+          </div>
+          <div class="chart-canvas-container">
+            <canvas id="chart-pca-2d"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 4: Pairwise Cross-Attention / Cosine Similarity Heatmap -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span>🔥 Token Pairwise Cosine Heatmap</span>
+            <span style="color: var(--rose-primary);">Attention Matrix Preview</span>
+          </div>
+          <div id="heatmap-container" style="flex: 1; overflow: auto;">
+            <!-- Dynamically generated HTML matrix -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MODULE 7: LEARN THE MATHEMATICS
+         ======================================================== -->
+    <section class="section" id="module-math">
+      <div class="section-header">
+        <div class="section-badge">Module 07</div>
+        <h2 class="section-title">Mathematical Foundations of the LLM Pipeline</h2>
+        <p class="section-subtitle">
+          Comprehensive, rigorous reference cards explaining the mathematical formulas, 
+          variables, and step-by-step numerical examples underpinning each transformation stage.
+        </p>
+      </div>
+
+      <div class="math-accordion">
+        <!-- Card 1: Tokenization & TTR -->
+        <div class="math-card expanded">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">🔤</div>
+              <div>
+                <div class="math-card-title">1. Tokenization & Type-Token Ratio (TTR)</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Text segmentation & lexical richness metrics</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              Tokenization transforms continuous text into discrete syntactic units. 
+              The Type-Token Ratio (TTR) measures vocabulary richness across a corpus.
+            </p>
+            <div class="math-formula-box" data-tex="TTR = \frac{V}{N}">
+              TTR = V / N
+            </div>
+            <table class="math-vars-table">
+              <tr><td>V</td><td>Unique vocabulary size (total distinct token types).</td></tr>
+              <tr><td>N</td><td>Total token count in the corpus.</td></tr>
+            </table>
+            <div class="example-box">
+              <strong>Numerical Example:</strong> In a corpus of 100 words with 45 unique words, 
+              <code>TTR = 45 / 100 = 0.45</code> (45% lexical diversity).
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="#module-vocab" class="btn btn-sm btn-secondary">Jump to Vocabulary Builder →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: One-Hot & Token IDs -->
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">🔢</div>
+              <div>
+                <div class="math-card-title">2. Token IDs & One-Hot Encoding</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">From discrete integer indices to sparse basis vectors</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              Each vocabulary token is assigned a unique index $k \in \{0, 1, \dots, V-1\}$.
+              A one-hot vector $\mathbf{x} \in \mathbb{R}^V$ has a $1$ at index $k$ and $0$ elsewhere.
+            </p>
+            <div class="math-formula-box" data-tex="\mathbf{x}_i = \begin{cases} 1 & \text{if } i = k \\ 0 & \text{otherwise} \end{cases}">
+              x[i] = 1 if i = k else 0
+            </div>
+            <table class="math-vars-table">
+              <tr><td>V</td><td>Vocabulary size (e.g. 32,000 to 128,000 tokens).</td></tr>
+              <tr><td>k</td><td>The integer token ID assigned to the word.</td></tr>
+            </table>
+            <div class="example-box">
+              <strong>Limitation:</strong> One-hot vectors are completely orthogonal: $\mathbf{x}_i \cdot \mathbf{x}_j = 0$ for all $i \neq j$. 
+              They capture no semantic similarity between "dog" and "cat". This necessitates dense embeddings.
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="#module-tokenizer" class="btn btn-sm btn-secondary">Jump to Interactive Tokenizer →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Embedding Matrix Lookup -->
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">📐</div>
+              <div>
+                <div class="math-card-title">3. Embedding Matrix Lookup Formulation</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Efficient row indexing as sparse matrix multiplication</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              The embedding layer stores a learnable weight matrix $\mathbf{E} \in \mathbb{R}^{V \times d}$. 
+              Multiplying a one-hot vector $\mathbf{x}_k$ by $\mathbf{E}$ selects the $k$-th row:
+            </p>
+            <div class="math-formula-box" data-tex="\mathbf{e}_k = \mathbf{x}_k \mathbf{E} = \mathbf{E}[k, :]">
+              e[k] = x[k] · E = E[k, :]
+            </div>
+            <table class="math-vars-table">
+              <tr><td>E</td><td>Weight matrix of dimensions $V \times d$.</td></tr>
+              <tr><td>d</td><td>Embedding dimensionality (e.g., 16 in this lab, 4096 in LLaMA-3).</td></tr>
+              <tr><td>eₖ</td><td>Continuous dense embedding vector $\mathbf{e}_k \in \mathbb{R}^d$.</td></tr>
+            </table>
+            <div style="margin-top: 1rem;">
+              <a href="#module-embeddings" class="btn btn-sm btn-secondary">Jump to Embedding Generator →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Dense Vector Representations & Latent Space -->
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">🌌</div>
+              <div>
+                <div class="math-card-title">4. Dense Vector Representations & Latent Space</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Continuous geometric manifolds vs sparse categorical features</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              Dense embeddings map words into a compact continuous space $\mathbb{R}^d$ where $d \ll V$. 
+              Each dimension captures a latent semantic or syntactic property:
+            </p>
+            <div class="math-formula-box" data-tex="\mathbf{v} = [v_1, v_2, \dots, v_d]^T \in \mathbb{R}^d, \quad \|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^d v_i^2} = 1">
+              v = [v1, v2, ..., vd] ∈ ℝ^d,  ||v||_2 = 1
+            </div>
+            <table class="math-vars-table">
+              <tr><td>d</td><td>Latent dimension count (16 in this lab, 768 in BERT, 4096 in LLaMA).</td></tr>
+              <tr><td>||v||₂</td><td>L2 Euclidean norm (normalizing vectors makes dot product equal cosine similarity).</td></tr>
+            </table>
+            <div class="example-box">
+              <strong>Vector Arithmetic:</strong> Learned embeddings exhibit linear compositionality: 
+              $\vec{v}_{\text{king}} - \vec{v}_{\text{man}} + \vec{v}_{\text{woman}} \approx \vec{v}_{\text{queen}}$.
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="#module-embeddings" class="btn btn-sm btn-secondary">Jump to Embedding Generator →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Cosine Similarity & Dot Product -->
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">🎯</div>
+              <div>
+                <div class="math-card-title">5. Dot Product & Cosine Similarity</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Directional alignment in continuous vector space</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              Cosine similarity measures the cosine of the angle $\theta$ between two non-zero vectors $\mathbf{u}$ and $\mathbf{v}$, 
+              ranging from $-1$ (opposite) to $+1$ (identical orientation).
+            </p>
+            <div class="math-formula-box" data-tex="\cos(\theta) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2} = \frac{\sum_{i=1}^d u_i v_i}{\sqrt{\sum_{i=1}^d u_i^2} \sqrt{\sum_{i=1}^d v_i^2}}">
+              cos(θ) = (u · v) / (||u|| ||v||) = ∑(u_i · v_i) / (√(∑ u_i²) · √(∑ v_i²))
+            </div>
+            <div class="example-box">
+              <strong>Numerical Walkthrough:</strong> Let $\mathbf{u} = [1, 2]$ and $\mathbf{v} = [2, 4]$.<br>
+              $\mathbf{u} \cdot \mathbf{v} = (1)(2) + (2)(4) = 10$.<br>
+              $\|\mathbf{u}\| = \sqrt{1^2 + 2^2} = \sqrt{5} \approx 2.236$.<br>
+              $\|\mathbf{v}\| = \sqrt{2^2 + 4^2} = \sqrt{20} \approx 4.472$.<br>
+              $\cos(\theta) = \frac{10}{2.236 \times 4.472} = \frac{10}{10} = 1.00$ (perfect collinearity).
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="#module-similarity" class="btn btn-sm btn-secondary">Jump to Similarity Lab →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Vector Distance Metrics (L1 vs L2) -->
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">📏</div>
+              <div>
+                <div class="math-card-title">6. Vector Distance Metrics (L1 Manhattan vs L2 Euclidean)</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Spatial proximity measures for nearest neighbor classification</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              Geometric distance quantifies vector divergence. Euclidean distance ($L_2$) measures straight-line distance, 
+              while Manhattan distance ($L_1$) measures grid-aligned coordinate differences:
+            </p>
+            <div class="math-formula-box" data-tex="d_{L2}(\mathbf{u}, \mathbf{v}) = \sqrt{\sum_{i=1}^d (u_i - v_i)^2}, \quad d_{L1}(\mathbf{u}, \mathbf{v}) = \sum_{i=1}^d |u_i - v_i|">
+              d_L2 = √(∑ (u_i - v_i)²),   d_L1 = ∑ |u_i - v_i|
+            </div>
+            <table class="math-vars-table">
+              <tr><td>dL2</td><td>Euclidean L2 distance (sensitive to large single-dimension outliers).</td></tr>
+              <tr><td>dL1</td><td>Manhattan L1 distance (robust sum of absolute deviations).</td></tr>
+            </table>
+            <div style="margin-top: 1rem;">
+              <a href="#module-embeddings" class="btn btn-sm btn-secondary">Jump to Vector Comparator →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7: Principal Component Analysis (PCA) -->
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">📊</div>
+              <div>
+                <div class="math-card-title">7. Principal Component Analysis (PCA) & Dimensionality Reduction</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Eigen-decomposition of covariance matrix for 2D/3D projection</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              To visualize 16-dimensional or high-dimensional embeddings in 3D space, PCA finds orthogonal axes of maximal variance.
+              Given centered data $\mathbf{X}_c$, the covariance matrix $\mathbf{C}$ is decomposed:
+            </p>
+            <div class="math-formula-box" data-tex="\mathbf{C} = \frac{1}{N-1} \mathbf{X}_c^T \mathbf{X}_c, \quad \mathbf{C} \mathbf{v}_k = \lambda_k \mathbf{v}_k, \quad \text{VarRatio}_k = \frac{\lambda_k}{\sum_{j=1}^d \lambda_j}">
+              C = (1 / (N - 1)) · X_c^T · X_c,   C · v_k = λ_k · v_k
+            </div>
+            <table class="math-vars-table">
+              <tr><td>C</td><td>Sample covariance matrix ($d \times d$).</td></tr>
+              <tr><td>vₖ</td><td>Eigenvector corresponding to the $k$-th largest eigenvalue.</td></tr>
+              <tr><td>λₖ</td><td>Eigenvalue representing the variance preserved along axis $\mathbf{v}_k$.</td></tr>
+            </table>
+            <div style="margin-top: 1rem;">
+              <a href="#module-space3d" class="btn btn-sm btn-secondary">Jump to 3D Vector Space →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 8: Softmax & Self-Attention Preview -->
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-card-title-group">
+              <div class="math-card-icon">🔥</div>
+              <div>
+                <div class="math-card-title">8. Scaled Dot-Product Self-Attention Preview</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">How embeddings dynamically interact in transformer attention heads</div>
+              </div>
+            </div>
+            <span class="math-card-chevron">▼</span>
+          </div>
+          <div class="math-card-body">
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">
+              Once token embeddings enter the Transformer, they project into Query ($\mathbf{Q}$), Key ($\mathbf{K}$), and Value ($\mathbf{V}$) matrices. 
+              The pairwise attention weights reflect pairwise dot products:
+            </p>
+            <div class="math-formula-box" data-tex="\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right)\mathbf{V}">
+              Attention(Q, K, V) = softmax((Q · K^T) / √d_k) · V
+            </div>
+            <table class="math-vars-table">
+              <tr><td>Q, K, V</td><td>Query, Key, and Value projection matrices.</td></tr>
+              <tr><td>√dk</td><td>Scaling factor preventing gradient vanishing in high dimensions.</td></tr>
+              <tr><td>softmax</td><td>Normalizes rows into probability distributions summing to 1.</td></tr>
+            </table>
+            <div style="margin-top: 1rem;">
+              <a href="#module-playground" class="btn btn-sm btn-secondary">Jump to Attention Heatmap in Playground →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">
+        ⚡ Interactive LLM Pipeline Explorer
+      </p>
+      <p style="font-size: 0.8rem;">
+        Educational Laboratory for Natural Language Processing, Subword Tokenization, Dense Vector Embeddings, and Dimensionality Reduction.
+      </p>
+      <p style="font-size: 0.75rem; margin-top: 1rem; color: var(--text-muted);">
+        Runs entirely in-browser with HTML5, CSS3, Three.js, and Chart.js. No server build step required.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Application Logic Modules -->
+  <script src="js/vocabulary.js"></script>
+  <script src="js/tokenizer.js"></script>
+  <script src="js/embeddings.js"></script>
+  <script src="js/similarity.js"></script>
+  <script src="js/visualization.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
